@@ -16,8 +16,6 @@ EXPOSE 8080
 
 WORKDIR /app
 
-#COPY pyproject.toml ./app/pyproject.toml
-#COPY poetry.lock ./app/poetry.lock
 COPY pyproject.toml ./
 
 RUN poetry install --without dev --no-root && rm -rf $POETRY_CACHE_DIR
@@ -30,7 +28,7 @@ ENV VIRTUAL_ENV=/app/.venv \
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
-COPY ./demo_app ./demo_app
+COPY ./app ./app
 COPY ./.streamlit ./.streamlit
 
-CMD ["streamlit", "run", "demo_app/main.py", "--server.port", "8080"]
+CMD ["streamlit", "run", "app/main.py", "--server.port", "8080"]

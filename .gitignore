@@ -1,5 +1,6 @@
 # Local data
 data/local_data/
+data/ollama
 
 # Secrets
 .streamlit/secrets.toml
@@ -154,3 +155,5 @@ cython_debug/
 credentials.json
 token.json
 
+# Misc Python
+__init__.py
