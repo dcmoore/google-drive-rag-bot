@@ -29,6 +29,5 @@ ENV VIRTUAL_ENV=/app/.venv \
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
 
 COPY ./app ./app
-COPY ./.streamlit ./.streamlit
 
 CMD ["streamlit", "run", "app/main.py", "--server.port", "8080"]
