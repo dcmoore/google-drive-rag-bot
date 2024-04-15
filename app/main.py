@@ -1,8 +1,5 @@
 """Python file to serve as the frontend"""
-import sys
 import os
-
-sys.path.append(os.path.abspath('.'))
 
 from langchain_community.llms import Ollama
 import streamlit as st
