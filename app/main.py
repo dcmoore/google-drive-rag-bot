@@ -10,11 +10,6 @@ import streamlit as st
 ollama_host = os.getenv("OLLAMA_HOST", "localhost")
 llm = Ollama(model="llama2:chat", base_url="http://{}:11434".format(ollama_host), verbose=True)
 
-def sendPrompt(prompt):
-    global llm
-    response = llm.invoke(prompt)
-    return response
-
 st.title("Chat with Google Drive Docs")
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [
@@ -31,7 +26,7 @@ for message in st.session_state.messages:
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = sendPrompt(prompt)
+            response = llm.invoke(prompt)
             print(response)
             st.write(response)
             message = {"role": "assistant", "content": response}
