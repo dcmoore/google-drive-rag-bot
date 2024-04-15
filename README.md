@@ -18,27 +18,30 @@ Then build the image
 DOCKER_BUILDKIT=1 docker build --target=runtime . -t gdrag-bot:latest
 ```
 
-You can then run the container alongside the project's dependent containers
+Now you have to make a choice due to a docker/ollama/mac gpu compatibility issue ([details here](https://chariotsolutions.com/blog/post/apple-silicon-gpus-docker-and-ollama-pick-two/)). You can run ollama inside a docker container (which will be really slow for Apple hardware) or you can run ollama on the host machine with GPU acceleration. To run ollama on the host machine, follow the steps below:
 
 ```bash
+brew install ollama
+ollama serve
+ollama run llama2:chat
 docker-compose up
 ```
 
-**IMPORTANT** Before using the application, make sure to download the Llama2:chat LLM. This step may take a few minutes.
+To run ollama inside a docker container, follow the steps below:
 
 ```bash
+docker-compose -f docker-compose-ollama.yml up
 docker exec -it google-drive-rag-bot-ollama-container-1 ollama run llama2:chat
 ```
 
-After that, everything should work as expected.
+After that, everything should work as expected. You can visit the site by going to [http://localhost:8080](http://localhost:8080)
 
 ### Run without Docker
 
-Alternatively you can install dependencies locally with [Poetry](https://python-poetry.org/) and activate virtual environment
+Alternatively you can install dependencies locally with [Poetry](https://python-poetry.org/)
 
 ```bash
 poetry install
-poetry shell
 ```
 
 You then need to download [Ollama](https://ollama.com/) (if on mac you can run `brew install ollama`). Then you need to start the ollama server
@@ -56,5 +59,5 @@ ollama run llama2:chat
 Then you will be able to run the Streamlit server
 
 ```bash
-streamlit run app/main.py
+poetry run streamlit run app/main.py
 ```

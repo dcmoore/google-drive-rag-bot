@@ -6,16 +6,16 @@ sys.path.append(os.path.abspath('.'))
 
 from langchain_community.llms import Ollama
 import streamlit as st
-from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 
-llm = Ollama(model="llama2:chat", base_url="http://ollama-container:11434", verbose=True)
+ollama_host = os.getenv("OLLAMA_HOST", "localhost")
+llm = Ollama(model="llama2:chat", base_url="http://{}:11434".format(ollama_host), verbose=True)
 
 def sendPrompt(prompt):
     global llm
     response = llm.invoke(prompt)
     return response
 
-st.title("Chat with Ollama")
+st.title("Chat with Google Drive Docs")
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [
         {"role": "assistant", "content": "Ask me a question !"}

@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  ollama-container:
+    image: ollama/ollama
+    volumes:
+      - ./data/ollama:/root/.ollama
+    ports:
+      - 11434:11434
+  gdrag-bot-app:
+    extends:
+      file: docker-compose.yml
+      service: gdrag-bot-app
+    environment:
+      - OLLAMA_HOST=ollama-container
