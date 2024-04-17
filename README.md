@@ -10,6 +10,8 @@ Start by cloning the repository
 git clone https://github.com/dcmoore/google-drive-rag-bot.git
 ```
 
+Create ./data/pgvector/local-password.txt and ./data/pgvector/local-user.txt files, then fill them with whatever one word value you want. They will be used to set the user & password of your locally running postgres db.
+
 ### Run with Docker
 
 Then build the image

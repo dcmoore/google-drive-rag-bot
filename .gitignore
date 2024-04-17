@@ -1,6 +1,8 @@
 # Local data
 data/local_data/
 data/ollama
+data/pgvector/local-user.txt
+data/pgvector/local-password.txt
 
 # Secrets
 .streamlit/secrets.toml

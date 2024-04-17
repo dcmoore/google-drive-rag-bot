@@ -4,9 +4,31 @@ services:
   gdrag-bot-app:
     image: gdrag-bot:latest
     command: streamlit run app/main.py --server.port 8080
+    depends_on:
+      - gdrag-bot-db
     volumes:
       - ./app/:/app/demo_app
     ports:
       - 8080:8080
     environment:
       - OLLAMA_HOST=host.docker.internal
+  gdrag-bot-db:
+    image: ankane/pgvector:v0.5.1
+    volumes:
+      - ./data/pgvector/seed.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_DB_FILE: /run/secrets/postgres_db
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
+    secrets:
+      - postgres_db
+      - postgres_user
+      - postgres_password
+
+secrets:
+  postgres_db:
+    file: ./data/pgvector/local-db.txt
+  postgres_user:
+    file: ./data/pgvector/local-user.txt
+  postgres_password:
+    file: ./data/pgvector/local-password.txt
