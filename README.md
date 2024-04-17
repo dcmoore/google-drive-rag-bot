@@ -10,6 +10,8 @@ Start by cloning the repository
 git clone https://github.com/dcmoore/google-drive-rag-bot.git
 ```
 
+Create an empty ./data/source_docs/ directory. Then download whatever google doc files you want in .docx format to that directory. These will get loaded into the vector database so the LLM can reference them.
+
 Create ./data/pgvector/local-password.txt and ./data/pgvector/local-user.txt files, then fill them with whatever one word value you want. They will be used to set the user & password of your locally running postgres db.
 
 ### Run with Docker
