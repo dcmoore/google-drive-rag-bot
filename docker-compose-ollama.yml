@@ -6,7 +6,10 @@ services:
       file: docker-compose.yml
       service: gdrag-bot-app
     environment:
-      - OLLAMA_HOST=ollama-container
+      OLLAMA_HOST: ollama-container
+      POSTGRES_DB_FILE: /run/secrets/postgres_db
+      POSTGRES_USER_FILE: /run/secrets/postgres_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/postgres_password
     depends_on:
       - gdrag-bot-db
       - ollama-container

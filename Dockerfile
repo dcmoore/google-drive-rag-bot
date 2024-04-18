@@ -27,6 +27,7 @@ ENV VIRTUAL_ENV=/app/.venv \
     PATH="/app/.venv/bin:$PATH"
 
 COPY --from=builder ${VIRTUAL_ENV} ${VIRTUAL_ENV}
+RUN apt-get update && apt-get install -y libpq5
 
 COPY ./app ./app
 COPY ./data/source_docs ./data/source_docs
