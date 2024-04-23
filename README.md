@@ -27,8 +27,8 @@ Now you have to make a choice due to a docker/ollama/mac gpu compatibility issue
 ```bash
 brew install ollama
 ollama serve
-ollama run llama2:chat
-ollama run llama2:7b
+ollama pull llama2:chat
+ollama pull nomic-embed-text
 docker-compose up
 ```
 
@@ -36,8 +36,8 @@ To run ollama inside a docker container, follow the steps below:
 
 ```bash
 docker-compose -f docker-compose-ollama.yml up
-docker exec -it google-drive-rag-bot-ollama-container-1 ollama run llama2:chat
-docker exec -it google-drive-rag-bot-ollama-container-1 ollama run llama2:7b
+docker exec -it google-drive-rag-bot-ollama-container-1 ollama pull llama2:chat
+docker exec -it google-drive-rag-bot-ollama-container-1 ollama pull nomic-embed-text
 ```
 
 After that, everything should work as expected. You can visit the site by going to [http://localhost:8080](http://localhost:8080)
@@ -59,8 +59,8 @@ ollama serve
 Then in a new terminal, install and run the llama2:chat LLM
 
 ```bash
-ollama run llama2:chat
-ollama run llama2:7b
+ollama pull llama2:chat
+ollama pull nomic-embed-text
 ```
 
 Then you will be able to run the Streamlit server

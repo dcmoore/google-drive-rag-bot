@@ -16,20 +16,26 @@ if 'qa' not in st.session_state:
 
     ollama_host = os.getenv("OLLAMA_HOST", "localhost")
     llm = Ollama(model="llama2:chat", base_url="http://{}:11434".format(ollama_host), verbose=True, temperature=0.8)
-    embeddings = OllamaEmbeddings(model="llama2:7b", base_url="http://{}:11434".format(ollama_host), show_progress=True, temperature=0.8)
+    embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url="http://{}:11434".format(ollama_host), show_progress=True, temperature=0.8)
     vector_store = PGVector(
         embeddings=embeddings,
         connection=f"postgresql+psycopg://{read_secret('postgres_user')}:{read_secret('postgres_password')}@gdrag-bot-db:5432/{read_secret('postgres_db')}",
     )
 
-    st.session_state.qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=vector_store.as_retriever())
+    st.session_state.qa = RetrievalQA.from_chain_type(
+        llm=llm,
+        chain_type="stuff",
+        retriever=vector_store.as_retriever(),
+        return_source_documents=True,
+        verbose=True
+    )
 
 
 # Streamlit frontend
-st.title("Chat with Google Drive Docs")
+st.title("Chat with an AI engineering leader.")
 if "messages" not in st.session_state.keys():
     st.session_state.messages = [
-        {"role": "assistant", "content": "Ask me a question !"}
+        {"role": "assistant", "content": "Hello! I'm an AI engineering leader. Ask me a question as if I were a real engineering leader and I'll do my best to share perspective that's been loaded into my system."}
     ]
 
 if prompt := st.chat_input("Your question"):
@@ -42,7 +48,8 @@ for message in st.session_state.messages:
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            response = st.session_state.qa.invoke(prompt).get("result", "I don't know")
+            full_prompt = "You are an engineering leader who responds concisely and has been asked the following question: " + prompt
+            response = st.session_state.qa.invoke(full_prompt).get("result", "I don't know")
             st.write(response)
             message = {"role": "assistant", "content": response}
             st.session_state.messages.append(message)
