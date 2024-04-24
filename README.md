@@ -1,5 +1,5 @@
 <h1 align="center">
-Google Drive RAG Bot
+AI Eng Leader Bot
 </h1>
 
 ## 💻 Running Locally
@@ -9,8 +9,6 @@ Start by cloning the repository
 ```bash
 git clone https://github.com/dcmoore/google-drive-rag-bot.git
 ```
-
-Create an empty ./data/source_docs/ directory. Then download whatever google doc files you want in .docx format to that directory. These will get loaded into the vector database so the LLM can reference them.
 
 Create ./data/pgvector/local-password.txt and ./data/pgvector/local-user.txt files, then fill them with whatever one word value you want. They will be used to set the user & password of your locally running postgres db.
 
@@ -68,3 +66,19 @@ Then you will be able to run the Streamlit server
 ```bash
 poetry run streamlit run app/main.py
 ```
+
+## Re-Seeding the Database
+
+If you want to add/remove transcripts from the database, start by creating an empty ./data/source_docs/ directory. Then download whatever google doc files you want in .docx format to that directory. Then re-build your app's docker image with docker build, start up your containers with docker-compose, then run the following command to embed the source_docs into the database in vector format:
+
+```bash
+docker exec -it google-drive-rag-bot-gdrag-bot-app-1 python3 app/load.py
+```
+
+If you want to commit those changes, you can update the seed file with the following command:
+
+```bash
+docker exec -i google-drive-rag-bot-gdrag-bot-db-1 /bin/bash -c "PGPASSWORD=<insert password> pg_dump --username <insert user> <insert db name>" > data/pgvector/seed.sql
+```
+
+The seed.sql file gets loaded into the database whenever the database container is created.

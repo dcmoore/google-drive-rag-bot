@@ -2,7 +2,6 @@
 import os
 import streamlit as st
 
-from load import load_database
 from util import read_secret
 from langchain.chains import RetrievalQA
 from langchain_community.embeddings import OllamaEmbeddings
@@ -11,9 +10,6 @@ from langchain_postgres.vectorstores import PGVector
 
 # Load the Ollama model and the embeddings with vector store data
 if 'qa' not in st.session_state:
-    print("Loading database")
-    load_database()
-
     ollama_host = os.getenv("OLLAMA_HOST", "localhost")
     llm = Ollama(model="llama2:chat", base_url="http://{}:11434".format(ollama_host), verbose=True, temperature=0.8)
     embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url="http://{}:11434".format(ollama_host), show_progress=True, temperature=0.8)
@@ -29,7 +25,6 @@ if 'qa' not in st.session_state:
         return_source_documents=True,
         verbose=True
     )
-
 
 # Streamlit frontend
 st.title("Chat with an AI engineering leader.")
