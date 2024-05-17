@@ -7,7 +7,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_postgres.vectorstores import PGVector
 
 ollama_host = os.getenv("OLLAMA_HOST", "localhost")
-embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url="http://{}:11434".format(ollama_host), show_progress=True, temperature=0.8)
+embeddings = OllamaEmbeddings(model="nomic-embed-text", base_url="http://{}:11434".format(ollama_host), show_progress=True, temperature=0.1)
 
 loader = DirectoryLoader(
   os.path.abspath("../data/source_docs"),
